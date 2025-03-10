@@ -1,8 +1,8 @@
-'use client'
-import axios from 'axios';
-import React,{useState} from 'react'
-import styled from 'styled-components'
-// import Header from '../Header';
+"use client";
+import axios from "axios";
+import React, { useState } from "react";
+import styled from "styled-components";
+import Header from "../Header";
 
 const FormContainer = styled.section`
   padding: 3rem 0;
@@ -46,7 +46,7 @@ const Input = styled.input`
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 1rem;
-  
+
   &:focus {
     outline: none;
     border-color: #1a237e;
@@ -62,7 +62,7 @@ const TextArea = styled.textarea`
   font-size: 1rem;
   min-height: 100px;
   resize: vertical;
-  
+
   &:focus {
     outline: none;
     border-color: #1a237e;
@@ -77,7 +77,7 @@ const Select = styled.select`
   border-radius: 4px;
   font-size: 1rem;
   background-color: #fff;
-  
+
   &:focus {
     outline: none;
     border-color: #1a237e;
@@ -95,11 +95,11 @@ const SubmitButton = styled.button`
   font-weight: 500;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  
+
   &:hover {
     background-color: #f57f17;
   }
-  
+
   &:disabled {
     background-color: #ccc;
     cursor: not-allowed;
@@ -122,179 +122,188 @@ const SuccessMessage = styled.div`
 `;
 
 function Contact() {
-
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    investmentAmount: '',
-    interestType: 'buy',
-    message: ''
+    name: "",
+    email: "",
+    phone: "",
+    investmentAmount: "",
+    interestType: "buy",
+    message: "",
   });
-  
+
   const validateForm = () => {
     const newErrors = {};
-    
+
     if (!formData.name.trim()) {
-      newErrors.name = 'Name is required';
+      newErrors.name = "Name is required";
     }
-    
+
     if (!formData.email.trim()) {
-      newErrors.email = 'Email is required';
+      newErrors.email = "Email is required";
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Email is invalid';
+      newErrors.email = "Email is invalid";
     }
-    
+
     if (!formData.phone.trim()) {
-      newErrors.phone = 'Phone number is required';
-    } else if (!/^\d{10}$/.test(formData.phone.replace(/[^0-9]/g, ''))) {
-      newErrors.phone = 'Phone number must be 10 digits';
+      newErrors.phone = "Phone number is required";
+    } else if (!/^\d{10}$/.test(formData.phone.replace(/[^0-9]/g, ""))) {
+      newErrors.phone = "Phone number must be 10 digits";
     }
-    
+
     if (!formData.investmentAmount.trim()) {
-      newErrors.investmentAmount = 'Investment amount is required';
+      newErrors.investmentAmount = "Investment amount is required";
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
-  
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prevData => ({
+    setFormData((prevData) => ({
       ...prevData,
-      [name]: value
+      [name]: value,
     }));
   };
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (validateForm()) {
       setIsSubmitting(true);
-      
+
       try {
-        const response = axios.post(process.env.NEXT_PUBLIC_API_URL+'/api/interest-form', formData)
-        
+        const response = axios.post(
+          process.env.NEXT_PUBLIC_API_URL + "/api/interest-form",
+          formData
+        );
+
         const result = await response.json();
-        
+
         if (response.ok) {
           setSubmitSuccess(true);
           setFormData({
-            name: '',
-            email: '',
-            phone: '',
-            investmentAmount: '',
-            interestType: 'buy',
-            message: ''
+            name: "",
+            email: "",
+            phone: "",
+            investmentAmount: "",
+            interestType: "buy",
+            message: "",
           });
         } else {
-          setErrors({ submit: result.error || 'Failed to submit form. Please try again.' });
+          setErrors({
+            submit: result.error || "Failed to submit form. Please try again.",
+          });
         }
       } catch (error) {
-        console.error('Error submitting form:', error);
-        setErrors({ submit: 'Network error. Please try again later.' });
+        console.error("Error submitting form:", error);
+        setErrors({ submit: "Network error. Please try again later." });
       } finally {
         setIsSubmitting(false);
       }
     }
   };
-  
+
   return (
-    <FormContainer >
-      <FormTitle>Express Your Interest</FormTitle>
-      <FormCard>
-        {submitSuccess && (
-          <SuccessMessage>
-            Thank you for your interest! We will contact you shortly.
-          </SuccessMessage>
-        )}
-        
-        <Form onSubmit={handleSubmit}>
-          <FormGroup>
-            <Label htmlFor="name">Full Name</Label>
-            <Input
-              type="text"
-              id="name"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-            />
-            {errors.name && <ErrorMessage>{errors.name}</ErrorMessage>}
-          </FormGroup>
-          
-          <FormGroup>
-            <Label htmlFor="email">Email Address</Label>
-            <Input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-            />
-            {errors.email && <ErrorMessage>{errors.email}</ErrorMessage>}
-          </FormGroup>
-          
-          <FormGroup>
-            <Label htmlFor="phone">Phone Number</Label>
-            <Input
-              type="tel"
-              id="phone"
-              name="phone"
-              value={formData.phone}
-              onChange={handleChange}
-            />
-            {errors.phone && <ErrorMessage>{errors.phone}</ErrorMessage>}
-          </FormGroup>
-          
-          <FormGroup>
-            <Label htmlFor="investmentAmount">Investment Amount (₹)</Label>
-            <Input
-              type="text"
-              id="investmentAmount"
-              name="investmentAmount"
-              value={formData.investmentAmount}
-              onChange={handleChange}
-            />
-            {errors.investmentAmount && <ErrorMessage>{errors.investmentAmount}</ErrorMessage>}
-          </FormGroup>
-          
-          <FormGroup>
-            <Label htmlFor="interestType">Interest Type</Label>
-            <Select
-              id="interestType"
-              name="interestType"
-              value={formData.interestType}
-              onChange={handleChange}
-            >
-              <option value="buy">Buy Shares</option>
-              <option value="sell">Sell Shares</option>
-              <option value="information">Get Information</option>
-            </Select>
-          </FormGroup>
-          
-          <FormGroup>
-            <Label htmlFor="message">Message (Optional)</Label>
-            <TextArea
-              id="message"
-              name="message"
-              value={formData.message}
-              onChange={handleChange}
-            />
-          </FormGroup>
-          
-          {errors.submit && <ErrorMessage>{errors.submit}</ErrorMessage>}
-          
-          <SubmitButton type="submit" disabled={isSubmitting}>
-            {isSubmitting ? 'Submitting...' : 'Submit'}
-          </SubmitButton>
-        </Form>
-      </FormCard>
-    </FormContainer>
-  )
+    <div>
+      <Header />
+      <FormContainer>
+        <FormTitle>Express Your Interest</FormTitle>
+        <FormCard>
+          {submitSuccess && (
+            <SuccessMessage>
+              Thank you for your interest! We will contact you shortly.
+            </SuccessMessage>
+          )}
+
+          <Form onSubmit={handleSubmit}>
+            <FormGroup>
+              <Label htmlFor="name">Full Name</Label>
+              <Input
+                type="text"
+                id="name"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+              />
+              {errors.name && <ErrorMessage>{errors.name}</ErrorMessage>}
+            </FormGroup>
+
+            <FormGroup>
+              <Label htmlFor="email">Email Address</Label>
+              <Input
+                type="email"
+                id="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+              />
+              {errors.email && <ErrorMessage>{errors.email}</ErrorMessage>}
+            </FormGroup>
+
+            <FormGroup>
+              <Label htmlFor="phone">Phone Number</Label>
+              <Input
+                type="tel"
+                id="phone"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+              />
+              {errors.phone && <ErrorMessage>{errors.phone}</ErrorMessage>}
+            </FormGroup>
+
+            <FormGroup>
+              <Label htmlFor="investmentAmount">Investment Amount (₹)</Label>
+              <Input
+                type="text"
+                id="investmentAmount"
+                name="investmentAmount"
+                value={formData.investmentAmount}
+                onChange={handleChange}
+              />
+              {errors.investmentAmount && (
+                <ErrorMessage>{errors.investmentAmount}</ErrorMessage>
+              )}
+            </FormGroup>
+
+            <FormGroup>
+              <Label htmlFor="interestType">Interest Type</Label>
+              <Select
+                id="interestType"
+                name="interestType"
+                value={formData.interestType}
+                onChange={handleChange}
+              >
+                <option value="buy">Buy Shares</option>
+                <option value="sell">Sell Shares</option>
+                <option value="information">Get Information</option>
+              </Select>
+            </FormGroup>
+
+            <FormGroup>
+              <Label htmlFor="message">Message (Optional)</Label>
+              <TextArea
+                id="message"
+                name="message"
+                value={formData.message}
+                onChange={handleChange}
+              />
+            </FormGroup>
+
+            {errors.submit && <ErrorMessage>{errors.submit}</ErrorMessage>}
+
+            <SubmitButton type="submit" disabled={isSubmitting}>
+              {isSubmitting ? "Submitting..." : "Submit"}
+            </SubmitButton>
+          </Form>
+        </FormCard>
+      </FormContainer>
+    </div>
+  );
 }
 
-export default Contact
+export default Contact;
