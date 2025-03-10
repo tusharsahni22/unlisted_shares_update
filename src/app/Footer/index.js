@@ -77,7 +77,7 @@ function Footer() {
         </FooterSection>
       </FooterContent>
       <Copyright>
-        <FooterText>&copy; {new Date().getFullYear()} CSK Shares. All rights reserved.</FooterText>
+        <FooterText>&copy; {2025} CSK Shares. All rights reserved.</FooterText>
       </Copyright>
     </FooterContainer>
   )
