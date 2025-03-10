@@ -1,4 +1,5 @@
 'use client'
+import axios from 'axios';
 import React,{useState} from 'react'
 import styled from 'styled-components'
 // import Header from '../Header';
@@ -176,19 +177,26 @@ function Contact() {
       setIsSubmitting(true);
       
       try {
-        // await axios.post('/api/interest-form', formData);
-        // setSubmitSuccess(true);
-        // setFormData({
-        //   name: '',
-        //   email: '',
-        //   phone: '',
-        //   investmentAmount: '',
-        //   interestType: 'buy',
-        //   message: ''
-        // });
+        const response = axios.post(process.env.NEXT_PUBLIC_API_URL+'/api/interest-form', formData)
+        
+        const result = await response.json();
+        
+        if (response.ok) {
+          setSubmitSuccess(true);
+          setFormData({
+            name: '',
+            email: '',
+            phone: '',
+            investmentAmount: '',
+            interestType: 'buy',
+            message: ''
+          });
+        } else {
+          setErrors({ submit: result.error || 'Failed to submit form. Please try again.' });
+        }
       } catch (error) {
         console.error('Error submitting form:', error);
-        setErrors({ submit: 'Failed to submit form. Please try again.' });
+        setErrors({ submit: 'Network error. Please try again later.' });
       } finally {
         setIsSubmitting(false);
       }
