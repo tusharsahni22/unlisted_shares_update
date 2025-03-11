@@ -1,8 +1,8 @@
-'use-client';
+'use client';
 import React from 'react';
 import styled from 'styled-components';
 import Image from 'next/image';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 const HeroContainer = styled.section`
   position: relative;
@@ -63,7 +63,7 @@ const HeroSubtitle = styled.p`
   }
 `;
 
-const HeroButton = styled(Link)`
+const HeroButton = styled.div`
   display: inline-block;
   background-color: #f9a825;
   color: #fff;
@@ -91,11 +91,11 @@ const FallbackBackground = styled.div`
 `;
 
 const Hero = () => {
+  const router = useRouter();
   return (
     <HeroContainer>
       <FallbackBackground />
       <HeroBackground>
-        {/* Use a more reliable image source or add error handling */}
         <Image 
           src="/Chennai-new.jpg" 
           alt="CSK Stadium" 
@@ -104,7 +104,6 @@ const Hero = () => {
           priority
           onError={(e) => {
             console.error('Image failed to load:', e);
-            // Hide the image on error
             e.currentTarget.style.display = 'none';
           }}
         />
@@ -114,7 +113,7 @@ const Hero = () => {
         <HeroSubtitle>
           Invest in one of the most successful and valuable IPL franchises with a loyal fanbase and consistent performance.
         </HeroSubtitle>
-        <HeroButton href="/contact">Express Interest</HeroButton>
+        <HeroButton onClick={()=>router.push('/contact')}>Express Interest</HeroButton>
       </HeroContent>
     </HeroContainer>
   );

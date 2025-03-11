@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 const HeaderContainer = styled.header`
   display: flex;
@@ -48,9 +48,9 @@ function Header() {
         <LogoText>CSK Shares</LogoText>
       </Logo>
       <Nav>
-          <NavLink>Home</NavLink>
+          <NavLink onClick={() =>{router.push('/')}}>Home</NavLink>
           <NavLink>About</NavLink>
-          <NavLink>Contact</NavLink>
+          <NavLink onClick={() =>{router.push('/contact')}}>Contact</NavLink>
       </Nav>
     </HeaderContainer>
   )
