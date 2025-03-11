@@ -1,6 +1,7 @@
-'use-client'
+'use client'
 import React from 'react'
 import styled from 'styled-components'
+import { useRouter } from 'next/navigation'
 
 const FooterContainer = styled.footer`
 background-color: #1a237e;
@@ -34,6 +35,7 @@ color: #fff;
 text-decoration: none;
 margin-bottom: 0.5rem;
 transition: color 0.3s ease;
+cursor: pointer;
 
 &:hover {
   color: #f9a825;
@@ -55,6 +57,8 @@ margin-right: auto;
 `;
 
 function Footer() {
+  const router = useRouter();
+  
   return (
     <FooterContainer>
       <FooterContent>
@@ -66,9 +70,9 @@ function Footer() {
         </FooterSection>
         <FooterSection>
           <FooterTitle>Quick Links</FooterTitle>
-            <FooterLink>Home</FooterLink>
-            <FooterLink>About</FooterLink>
-            <FooterLink>Contact</FooterLink>
+          <FooterLink onClick={() => router.push('/')}>Home</FooterLink>
+          <FooterLink onClick={() => router.push('/about')}>About</FooterLink>
+          <FooterLink onClick={() => router.push('/contact')}>Contact</FooterLink>
         </FooterSection>
         <FooterSection>
           <FooterTitle>Contact Us</FooterTitle>
@@ -77,7 +81,7 @@ function Footer() {
         </FooterSection>
       </FooterContent>
       <Copyright>
-        <FooterText>&copy; {2025} CSK Shares. All rights reserved.</FooterText>
+        <FooterText>&copy; {new Date().getFullYear()} CSK Shares. All rights reserved.</FooterText>
       </Copyright>
     </FooterContainer>
   )

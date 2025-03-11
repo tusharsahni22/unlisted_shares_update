@@ -63,7 +63,7 @@ const HeroSubtitle = styled.p`
   }
 `;
 
-const HeroButton = styled.div`
+const HeroButton = styled.button`
   display: inline-block;
   background-color: #f9a825;
   color: #fff;
@@ -71,10 +71,11 @@ const HeroButton = styled.div`
   border-radius: 4px;
   font-weight: 500;
   text-decoration: none;
+  border: none;
+  cursor: pointer;
   transition: background-color 0.3s ease;
   
   &:hover {
-    cursor: pointer;
     background-color: #f57f17;
   }
 `;
@@ -92,6 +93,7 @@ const FallbackBackground = styled.div`
 
 const Hero = () => {
   const router = useRouter();
+  
   return (
     <HeroContainer>
       <FallbackBackground />
@@ -104,6 +106,7 @@ const Hero = () => {
           priority
           onError={(e) => {
             console.error('Image failed to load:', e);
+            // Hide the image on error
             e.currentTarget.style.display = 'none';
           }}
         />
@@ -113,7 +116,7 @@ const Hero = () => {
         <HeroSubtitle>
           Invest in one of the most successful and valuable IPL franchises with a loyal fanbase and consistent performance.
         </HeroSubtitle>
-        <HeroButton onClick={()=>router.push('/contact')}>Express Interest</HeroButton>
+        <HeroButton onClick={() => router.push('/contact')}>Express Interest</HeroButton>
       </HeroContent>
     </HeroContainer>
   );
