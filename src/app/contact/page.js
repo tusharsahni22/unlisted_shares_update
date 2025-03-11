@@ -193,8 +193,9 @@ function Contact() {
             submit: "Failed to submit form. Please try again.",
           });
           console.error("Form submit error:", error);
-        });
-    }
+        }).finally(() => {
+          setIsSubmitting(false);
+        })}
   };
 
   return (
