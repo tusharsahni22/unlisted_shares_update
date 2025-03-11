@@ -174,16 +174,10 @@ function Contact() {
 
     if (validateForm()) {
       setIsSubmitting(true);
-
-      try {
-        const response = axios.post(
-          process.env.NEXT_PUBLIC_API_URL + "/api/interest-form",
-          formData
-        );
-
-        const result = await response.json();
-
-        if (response.ok) {
+      axios
+        .post("/api/interest-form", formData)
+        .then((response) => {
+          console.log("response", response);
           setSubmitSuccess(true);
           setFormData({
             name: "",
@@ -193,17 +187,13 @@ function Contact() {
             interestType: "buy",
             message: "",
           });
-        } else {
+        })
+        .catch((error) => {
           setErrors({
-            submit: result.error || "Failed to submit form. Please try again.",
+            submit: "Failed to submit form. Please try again.",
           });
-        }
-      } catch (error) {
-        console.error("Error submitting form:", error);
-        setErrors({ submit: "Network error. Please try again later." });
-      } finally {
-        setIsSubmitting(false);
-      }
+          console.error("Form submit error:", error);
+        });
     }
   };
 
