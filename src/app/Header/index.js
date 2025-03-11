@@ -1,8 +1,7 @@
-'use client'
 import React from 'react'
 import styled from 'styled-components';
-import { useRouter } from 'next/navigation';
- 
+import { useRouter } from 'next/router';
+
 const HeaderContainer = styled.header`
   display: flex;
   justify-content: space-between;
@@ -14,9 +13,6 @@ const HeaderContainer = styled.header`
 const Logo = styled.div`
   display: flex;
   align-items: center;
-  &:hover {
-    cursor: pointer;
-  }
 `
 const LogoText = styled.h1`
   font-size: 1.5rem;
@@ -44,15 +40,15 @@ const NavLink = styled.a`
 
 
 function Header() {
-  const router  = useRouter();
+  const router = useRouter();
   return (
     <HeaderContainer>
-      <Logo onClick={() => router.push('/')}>
+      <Logo onClick={() =>{router.push('/')}}>
         <Image src="https://cdn.prod.website-files.com/66dad9c594a45d74898a5fc6/66e9a5d287ad4d164a1788ae_70521baac89be4d4cb2f223bbf67c974%20(1).avif" alt="CSK Logo" width={40} height={40} />
         <LogoText>CSK Shares</LogoText>
       </Logo>
       <Nav>
-          <NavLink  onClick={() => router.push('/')}>Home</NavLink>
+          <NavLink>Home</NavLink>
           <NavLink>About</NavLink>
           <NavLink>Contact</NavLink>
       </Nav>
